@@ -1,0 +1,55 @@
+.hero{
+    height: 80vh;
+    background: linear-gradient(180deg, #FEFFFF, #DEF2F1 60%);
+    display: flex;
+}
+
+.hero-left-text{
+    margin-top: 15px;
+}
+
+.hero-left{
+     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 180px;
+}
+
+
+.hero-left-text h1{
+    color: #2b7a78;
+    font-size: 31px;
+    font-weight: 900;
+}
+
+.hero-left-text p{
+    color: #2b7a78;
+    font-size: 25px;
+    font-weight: 300;
+    margin-left: 47px;
+}
+
+
+.hero-latest-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 310px;
+    height: 70px;
+    border-radius: 75px;
+    margin-top: 30px;
+    background: #17252a;
+    color: white;
+    font-size: 22px;
+    font-weight: 500;
+    margin-left: 63px;
+}
+
+.hero-right{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+}

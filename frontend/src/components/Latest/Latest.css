@@ -1,0 +1,36 @@
+.latest{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 105vh;    
+}
+
+.latest-text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.latest-text h1{
+    color: #17252A;
+    font-size: 50px;
+    font-weight: 600;
+    margin-top: 60px;
+}
+
+.latest hr{
+    width: 200px;
+    margin-top: -20px;
+    border-radius: 10px;
+    background: #2b7a78;
+}
+
+.latest-item{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 79px;
+    margin-left: 0px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+

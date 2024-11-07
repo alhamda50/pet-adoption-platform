@@ -1,0 +1,63 @@
+.add-adoption {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-adoption h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.add-adoption form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-adoption input[type="text"],
+.add-adoption select,
+.add-adoption textarea {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.add-adoption input[type="text"]::placeholder,
+.add-adoption textarea::placeholder {
+    color: #888; /* Light gray for placeholder */
+}
+
+.add-adoption select {
+    color: #888; /* Light gray text for unselected placeholder option */
+}
+
+.add-adoption select:focus,
+.add-adoption input[type="text"]:focus,
+.add-adoption textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.add-adoption button[type="submit"] {
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-adoption button[type="submit"]:hover {
+    background-color: #0056b3;
+}
