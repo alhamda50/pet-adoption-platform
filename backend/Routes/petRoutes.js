@@ -43,7 +43,7 @@ router.post('/pet/post', upload, (req, res) => {
 
     petData.media = mediaPaths;
 
-    // Save pet data to the database (replace with your actual DB code)
+    // Save pet data to the database
     petModel.create(petData)
         .then((newPet) => {
             res.json({
@@ -59,17 +59,28 @@ router.post('/pet/post', upload, (req, res) => {
         });
 });
 
-// Get pet details by ID
-router.get('/pets/:_id', async (req, res) => {
+// Get pet details by ID (Corrected the route)
+router.get('/pet/:_id', async (req, res) => {
     try {
-      const pet = await petModel.findById(req.params.petId);  // Find pet by ID
-      if (!pet) return res.status(404).json({ message: 'Pet not found' });
-      res.json({ petData: pet });  // Send the pet data in response
+        const pet = await petModel.findById(req.params._id);  // Find pet by ID
+        if (!pet) return res.status(404).json({ message: 'Pet not found' });
+        res.json({ petData: pet });  // Send the pet data in response
     } catch (error) {
-      console.error('Error fetching pet:', error);
-      res.status(500).json({ error: 'Server error' });
+        console.error('Error fetching pet:', error);
+        res.status(500).json({ error: 'Server error' });
     }
-  });
+});
 
+// Get pets based on category
+router.get('/pet/category/:category', async (req, res) => {
+    try {
+        const category = req.params.category;
+        const pets = await petModel.find({ category }); // Assuming 'category' is the correct field in your schema
+        res.json({ petData: pets });
+    } catch (error) {
+        console.error("Error fetching pets:", error);
+        res.status(500).json({ message: "Error fetching pets" });
+    }
+});
 
-module.exports = router; 
+module.exports = router;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../axiosinterceptor';
 import './Add.css';
 
@@ -13,7 +13,6 @@ const Add = () => {
         location: '',
         medical_history: '',
         description: '',
-        status: 'available',
         images: []
     });
     const navigate = useNavigate();
@@ -32,22 +31,46 @@ const Add = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         const formData = new FormData();
         Object.keys(petData).forEach((key) => {
             if (key === 'images') {
-                petData.images.forEach((file) => formData.append('media', file));
+                petData.images.forEach((file) => formData.append('media', file)); // Appending images
             } else {
-                formData.append(key, petData[key]);
+                formData.append(key, petData[key]); // Appending other pet details
             }
         });
-
+    
+        console.log('Form Data:', Array.from(formData.entries())); // Log FormData for debugging
+    
         try {
-            const response = await axiosInstance.post('/pet/post', formData);
+            const response = await axiosInstance.post('/pet/post', formData); // Post data to the backend
+            console.log('Response:', response); // Log the response from backend
             alert(response.data.message);
-            navigate('/PetDetail');
+    
+            // Ensure petData is defined and contains valid pet details
+            if (response.data.petData && response.data.petData._id) {
+                // Redirect based on the selected category
+                const category = petData.category;
+                switch (category) {
+                    case 'Dog':
+                        navigate('/dog'); // Navigate to the Dog category page
+                        break;
+                    case 'Cat':
+                        navigate('/cat'); // Navigate to the Cat category page
+                        break;
+                    case 'Other':
+                        navigate('/others'); // Navigate to the Other category page
+                        break;
+                    default:
+                        navigate(`/p/pet/${response.data.petData._id}`); // Redirect to a default Pet Detail page
+                        break;
+                }
+            } else {
+                alert('Failed to retrieve pet data after submission.');
+            }
         } catch (error) {
-            console.error("Submission error:", error);
+            console.error("Submission error:", error.response ? error.response.data : error.message);
             alert("Failed to submit form. Please try again.");
         }
     };
@@ -64,9 +87,9 @@ const Add = () => {
                     style={{ color: petData.category === "" ? '#888' : 'black' }}
                 >
                     <option value="" disabled hidden>Select Pet Category</option>
-                    <option value="Dog">Dog</option>
-                    <option value="Cat">Cat</option>
-                    <option value="Other">Other</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="others">Other</option>
                 </select>
 
                 <input type="text" name="name" placeholder="Pet Name" onChange={handleChange} required />
@@ -97,10 +120,10 @@ const Add = () => {
                     onChange={handleFileChange} 
                 />
                 
-               <Link to='/p/pets/:_id'> <button type="submit">Post</button></Link>
+                 <button type="submit">Post</button>
             </form>
         </div>
     );
 };
 
-export default Add; 
+export default Add;

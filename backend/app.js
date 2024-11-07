@@ -26,6 +26,9 @@ app.use("/user",userRoute)
 const pRoute = require('./Routes/petRoutes');
 app.use('/p', pRoute);  // Using /p as the route prefix
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
 
 app.listen(3000, () => {
     console.log("server is up and listening on port 3000");

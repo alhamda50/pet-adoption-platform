@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const petModel = require('../model/pets');
+const { protect } = require('../middleware/protect');
 const router = express.Router();
 
 // Middleware for parsing JSON and form data
@@ -52,35 +53,20 @@ router.get('/', verifyToken, async (req, res) => {
 // POST: Add a new pet adoption with images/videos
 // POST: Add a new pet adoption with images/videos
 router.post('/post', verifyToken, upload, async (req, res) => {
-    console.log('Files received:', req.files); // Log files received from the request
     try {
         const { name, age, breed, gender, medical_history, description, category, location } = req.body;
+        const mediaPaths = req.files ? req.files.map(file => `uploads/${file.filename}`) : [];
         
-        // Corrected the way file paths are mapped
-        const mediaPaths = req.files.map(file => `uploads/${file.filename}`);
-        console.log('Media paths:', mediaPaths); // Log the paths for uploaded files
-        
-        const petData = {
-            name,
-            age,
-            breed,
-            gender,
-            medical_history,
-            description,
-            category,
-            location,
-            media: mediaPaths,
-            owner_id: req.userId
-        };
-        
+        const petData = { name, age, breed, gender, medical_history, description, category, location, media: mediaPaths, owner_id: req.userId };
         const newPet = new petModel(petData);
         await newPet.save();
-        
-        res.status(200).send("Post successful with media");
+    
+res.status(200).json({ message: "Post successful with media", petData: newPet });
     } catch (error) {
         console.error(error);
-        res.status(404).send("Post unsuccessful");
+        res.status(500).json({ message: "Post unsuccessful", error: error.message });
     }
 });
+
 
 module.exports = router;
