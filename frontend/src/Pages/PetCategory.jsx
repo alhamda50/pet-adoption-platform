@@ -1,52 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../axiosinterceptor'; // Assuming your axios instance is set up to handle API calls
+import axiosInstance from '../axiosinterceptor';
+import { Link } from 'react-router-dom'; // Import Link component
+import './CSS/PetCategory.css'
 
 const PetCategory = ({ category }) => {
-  const [pets, setPets] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [pets, setPets] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null); // Error state
 
-  // Fetch pets based on category
-  const fetchPets = async () => {
-    try {
-      const response = await axiosInstance.get(`/pet/category/${category}`);
-      console.log('Fetched pets:', response.data.petData); // Debugging the response data
-      setPets(response.data.petData);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching pets:", error);
-      setLoading(false);
+    // Fetch pets based on category
+    const fetchPets = async () => {
+        try {
+            if (!category) {
+                throw new Error("Category is undefined.");
+            }
+            console.log("Fetching pets for category:", category);
+            const response = await axiosInstance.get(`p/pet/category/${category}`);
+            if (response.data && response.data.petData) {
+                console.log('Fetched Pets:', response.data.petData);
+                setPets(response.data.petData);
+            } else {
+                console.log('No pets available in this category.');
+                setPets([]);  // Handle empty data
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching pets:", error);
+            setError(error.message);  // Set error message to state
+            setLoading(false);  // Stop loading
+        }
+    };
+
+    useEffect(() => {
+        console.log("Selected category:", category); // Check the category
+        if (category) {
+            fetchPets();
+        }
+    }, [category]); // Fetch pets when the category changes
+
+    if (loading) {
+        return <p>Loading pets...</p>;
     }
-  };
 
-  useEffect(() => {
-    fetchPets();
-  }, [category]); // Fetch pets whenever the category changes
+    if (error) {
+        return <p>Error: {error}</p>;  // Show the error if something went wrong
+    }
 
-  if (loading) {
-    return <p>Loading pets...</p>;
-  }
+    return (
+        <div>
+            <h2 style={{textAlign: 'center', margin: 50}}>
+                {category ? category.charAt(0).toUpperCase() + category.slice(1) : 'Category'} for Adoption
+            </h2>
 
-  return (
-    <div>
-      <h3>{category} for Adoption</h3>
-      {pets.length === 0 ? (
-        <p>No pets available for adoption in this category.</p>
-      ) : (
-        <div className="pet-list">
-          {pets.map((pet) => (
-            <div key={pet._id} className="pet-card">
-              <img src={pet.media[0]} alt={pet.name} /> {/* Changed images to media */}
-              <h4>{pet.name}</h4>
-              <p>{pet.description}</p>
-              <p>Age: {pet.age}</p>
-              <p>Breed: {pet.breed}</p>
-              {/* Add any additional pet details you want to display */}
-            </div>
-          ))}
+            {pets.length === 0 ? (
+                <p>No pets available for adoption in this category.</p>
+            ) : (
+                <div className="pet-list">
+                    {pets.map((pet) => (
+                        <Link key={pet._id} to={`/pet/${pet._id}`} className="pet-card-link"> {/* Wrap pet card in Link */}
+                            <div className="pet-card">
+                                {/* Check if pet.images is an array and has at least one image */}
+                                <img 
+                                    src={pet.media && pet.media.length > 0 ? `http://localhost:3000/${pet.media[0]}` : '/path/to/default-media.jpg'} 
+                                    alt={pet.name} 
+                                />
+                                <h4>{pet.name}</h4>
+                                <p>{pet.gender}</p>
+                                <p>Age: {pet.age}</p>
+                                <p>Breed: {pet.breed}</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default PetCategory;

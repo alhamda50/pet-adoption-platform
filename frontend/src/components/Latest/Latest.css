@@ -1,36 +1,93 @@
-.latest{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: 105vh;    
+.latest-pets {
+    padding: 40px 0;
+    height: 60vh;
+    text-align: center;
 }
 
-.latest-text{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.latest-text h1{
-    color: #17252A;
-    font-size: 50px;
+.latest-pets h2 {
+    color: #333;
+    font-size: 32px;
     font-weight: 600;
-    margin-top: 60px;
+    margin-bottom: 20px;
 }
 
-.latest hr{
-    width: 200px;
-    margin-top: -20px;
-    border-radius: 10px;
-    background: #2b7a78;
-}
-
-.latest-item{
-    margin-top: 50px;
+.pets-list {
     display: flex;
-    flex-direction: row;
-    gap: 79px;
-    margin-left: 0px;
-    grid-template-columns: 1fr 1fr 1fr;
+    flex-wrap: wrap;
+    justify-content: center;  /* Center the items horizontally */
+    gap: 15px;  /* Reduced gap */
+    margin-top: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 
+.item {
+    width: 220px;  /* Adjusted for a more compact look */
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    text-align: center;
+    overflow: hidden;  /* Ensures the content stays within rounded corners */
+}
+
+.item:hover {
+    transform: translateY(-5px);  /* Subtle hover effect */
+}
+
+.item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item p {
+    color: #555;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.item-data {
+    color: #777;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.item-data p {
+    margin-bottom: 3px; /* Reduced space between lines */
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 1024px) {
+    .pets-list {
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .item {
+        width: 100%;
+        max-width: 270px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .latest-pets {
+        padding: 20px;
+    }
+
+    .pets-list {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .item {
+        width: 100%;
+        max-width: 320px;  /* Make it wider for smaller screens */
+    }
+}

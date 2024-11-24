@@ -1,54 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import './Latest.css';
-import Item from '../Items/Item';
 import axios from 'axios';
+import Item from '../Items/Item'; // Import the Item component
 
 const Latest = () => {
-  const [petData, setPetData] = useState([]);
+  const [pets, setPets] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPets = async () => {
+    // Fetch the latest 4 pets from the backend API
+    const fetchLatestPets = async () => {
       try {
-        // Get the token from localStorage
-        const token = localStorage.getItem('token');
-
-        // If token exists, make an authenticated request
-        const response = await axios.get('http://localhost:3000/pet', {
-          headers: {
-            Authorization: `Bearer ${token}` // Attach token as a Bearer token
-          }
-        });
-
-        setPetData(response.data.pets || []); // Adjust if data structure changed
+        const response = await axios.get('pet/'); // Your API endpoint to fetch latest 4 pets
+        console.log(response.data); // Log the response data for debugging
+        setPets(response.data); // Set pets if it's an array
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching pet data:', error);
-        // Optional: Handle unauthorized access
-        if (error.response && error.response.status === 401) {
-          alert('Unauthorized access. Please log in again.');
-          // Redirect to login or clear token, as needed
-          localStorage.removeItem('token');
-        }
+        console.error('Error fetching pets:', error);
+        setLoading(false);
       }
     };
 
-    fetchPets();
+    fetchLatestPets();
   }, []);
 
-  return (
-    <div className='latest'>
-      <div className='latest-text'>
-        <h1>NEWLY ADDED</h1>
-        <hr />
-      </div>
+  if (loading) {
+    return <p>Loading pets...</p>;
+  }
 
-      <div className="latest-item">
-        {Array.isArray(petData) ? (
-          petData.map((item, i) => (
-            <Item key={i} id={item.id} name={item.name} image={item.images} breed={item.breed} gender={item.gender} />
-          ))
-        ) : (
-          <p>No pets available at this time.</p>
-        )}
+  if (!Array.isArray(pets) || pets.length === 0) {
+    return <p>No pets available at this time.</p>;
+  }
+
+  return (
+    <div className="latest-pets">
+      <h2>Latest Pets</h2>
+      <div className="pets-list">
+        {pets.map(pet => (
+          <Item
+            key={pet._id}
+            id={pet._id}
+            name={pet.name}
+            image={pet.media}
+            breed={pet.breed}
+            gender={pet.gender}
+            phone={pet.owner_id ? pet.owner_id.phone : null}
+          />
+        ))}
       </div>
     </div>
   );

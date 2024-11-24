@@ -4,11 +4,10 @@ const axiosInstance = axios.create({
     baseURL: 'http://localhost:3000' // Ensure this is correct for your backend
 });
 
-// Request interceptor to add the token to headers
 axiosInstance.interceptors.request.use(
     (config) => {
-        const accessToken = localStorage.getItem('token');
-        if (accessToken) {
+        const accessToken = localStorage.getItem('token'); // Ensure this key matches local storage
+        if (accessToken && !config.url.includes('/user/register') && !config.url.includes('/user/login')) {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
         return config;
@@ -16,7 +15,6 @@ axiosInstance.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle 401 errors
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -28,4 +26,6 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-export default axiosInstance; 
+export default axiosInstance;
+
+

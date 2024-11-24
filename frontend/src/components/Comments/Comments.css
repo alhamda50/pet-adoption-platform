@@ -20,6 +20,7 @@
      color: #171717;
      font-weight: 300;
      text-align: justify;
+     margin-top: 90px;
  }
 
  .comments-left h5{
@@ -46,7 +47,6 @@
      flex: 1;
      display: flex;
      align-items: center;
-     justify-content: flex-end;
  }
 
  .comments-right img{

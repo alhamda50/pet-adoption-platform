@@ -1,5 +1,5 @@
 .hero{
-    height: 80vh;
+    height: 100vh;
     background: linear-gradient(180deg, #FEFFFF, #DEF2F1 60%);
     display: flex;
 }
@@ -52,4 +52,8 @@
     display: flex;
     justify-content: center;
 
+}
+
+.hero-right img{
+    margin-bottom: 99px;
 }

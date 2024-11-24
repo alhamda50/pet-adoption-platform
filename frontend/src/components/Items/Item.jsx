@@ -1,32 +1,28 @@
-import React from 'react'
-import './Item.css'
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { usePetContext } from '../../Context/PetContext';  // Import the context
+import './Item.css'; 
 
-const Item = (props) => {
+const Item = ({ id, name, image, breed, gender, phone }) => {
+    const { setSelectedPet } = usePetContext();  // Use context to set selected pet
+
+    const handlePetClick = () => {
+        setSelectedPet({ id, name, image, breed, gender, phone });
+    };
+
     return (
-      <div className='item'>
+        <div className="item">
+            <Link to={`/pet/${id}`} onClick={handlePetClick}> {/* Add click handler */}
+                <img src={image[0]} alt={name} /> 
+            </Link>
+            <p>{name}</p>
+            <div className="item-data">
+                <p>Breed: {breed}</p>
+                <p>Gender: {gender}</p>
+                {phone && <p>Contact: {phone}</p>}
+            </div>
+        </div>
+    );
+};
 
-  
-          <Link to={`/product/${props.id}`}><img src={props.image[0]} alt="images" /></Link>
-          <p>{props.name}</p>
-          <div className="item_data">
-            <p>{props.breed}</p>
-            <p>{props.gender}</p>
-          </div>
-          
-          {/* <div className="item-prices">
-              <div className="item-price-new">
-                  <p>${props.new_price}</p>
-              </div>
-              <div className="item-price-old">
-                  <p>${props.old_price}</p>
-                  
-              </div>
-              
-  
-          </div> */}
-      </div>
-    )
-  }
-  
-  export default Item
+export default Item;

@@ -5,6 +5,13 @@ import comment_image from '../../assets/random/comment.png'
 const Comments = () => {
   return (
     <div className='comments'>
+
+
+<div className="comments-right">
+            <img src={comment_image} alt="" />
+        </div>
+
+        
         <div className="comments-left">
             <p>"If having a soul means being able to feel love and loyalty
                and gratitude, then animals are better off than a lot of humans.
@@ -15,11 +22,9 @@ const Comments = () => {
                    joy in simply being alive."
             </p>
             <h5>- James Herriot</h5>
-            <button>Adopt Now</button>
+            {/* <button>Adopt Now</button> */}
         </div>
-        <div className="comments-right">
-            <img src={comment_image} alt="" />
-        </div>
+        
     </div>
   )
 }

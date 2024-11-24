@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
     userId: {
@@ -6,13 +6,20 @@ const postSchema = new mongoose.Schema({
         ref: 'user', // Referencing the users collection
         required: true,
     },
-    title: String,
-    content: String,
+    title: {
+        type: String,
+        required: true,
+    },
+    content: {
+        type: String,
+        required: true,
+    },
     created_at: {
         type: Date,
         default: Date.now,
-    }
+    },
 });
 
 const postData = mongoose.model('post', postSchema);
 module.exports = postData;
+

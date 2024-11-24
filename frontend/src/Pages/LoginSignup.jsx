@@ -2,12 +2,14 @@ import { useState } from 'react';
 import './CSS/LoginSignup.css';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosinterceptor';
+import { usePetContext } from '../Context/PetContext';
 
 function LoginSignup() {
     const [isActive, setIsActive] = useState(false);
     const [loginData, setLoginData] = useState({ userEmail: '', password: '' });
     const [registerData, setRegisterData] = useState({ username: '', userEmail: '', password: '', phone: '' });
     const [error, setError] = useState('');
+    const { setIsLoggedIn, setUser } = usePetContext();
     const navigate = useNavigate();
 
     const toggleForm = () => setIsActive(!isActive);
@@ -19,33 +21,39 @@ function LoginSignup() {
         } else {
             setLoginData({ ...loginData, [name]: value });
         }
-        setError(''); // Clear error when typing
+        setError('');
     };
 
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
         try {
-            const res = await axiosInstance.post("/user/login", loginData);
-            alert(res.data.message);
+            const res = await axiosInstance.post('/user/login', loginData);
             if (res.data.usertoken) {
-                localStorage.setItem("token", res.data.usertoken);
-                navigate('/');
+                localStorage.setItem('token', res.data.usertoken);
+                localStorage.setItem('role', res.data.role);
+                setIsLoggedIn(true);
+                setUser({ ...res.data.user, role: res.data.role });
+                alert('Login successful!');
+                navigate(res.data.role === 'admin' ? '/admin/dashboard' : '/');
+            } else {
+                setError('Invalid Credentials');
             }
         } catch (err) {
-            setError("Invalid Credentials");
-            console.error(err);
+            console.error('Login error:', err.response || err.message || err);
+            setError('Invalid Credentials');
         }
     };
 
     const handleRegisterSubmit = async (event) => {
         event.preventDefault();
         try {
-            const res = await axiosInstance.post("/user/register", registerData);
+            const res = await axiosInstance.post('/user/register', registerData);
             alert(res.data.message);
             setIsActive(false);
         } catch (err) {
-            setError("Registration failed. Please try again.");
-            console.error(err);
+            const backendMessage = err.response?.data?.message || 'Registration failed. Please try again.';
+            setError(backendMessage);
+            console.error('Registration error:', err);
         }
     };
 
@@ -68,20 +76,8 @@ function LoginSignup() {
             <div className="form-container sign-in">
                 <form onSubmit={handleLoginSubmit}>
                     <h1>Sign In</h1>
-                    <input
-                        type="email"
-                        name="userEmail"
-                        placeholder="Email"
-                        value={loginData.userEmail}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={loginData.password}
-                        onChange={handleChange}
-                    />
+                    <input type="email" name="userEmail" placeholder="Email" value={loginData.userEmail} onChange={handleChange} />
+                    <input type="password" name="password" placeholder="Password" value={loginData.password} onChange={handleChange} />
                     <a href="#">Forget Your Password?</a>
                     <button type="submit">Sign In</button>
                     {error && <p className="error-message">{error}</p>}

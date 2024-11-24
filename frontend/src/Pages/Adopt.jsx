@@ -7,7 +7,7 @@ const Adopt = () => {
   return (
     <>
     <Hero />
-    <Latest />
+    
     <Comments />
     </>
   )

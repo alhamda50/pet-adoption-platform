@@ -1,38 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axiosInstance from '../../axiosinterceptor'; // Assuming you've set up axios instance
+import axiosInstance from '../../axiosinterceptor';
 
 const PetDetail = () => {
-  const { _id } = useParams();  // Accessing the petId from the URL
+  const { _id } = useParams();
   const [pet, setPet] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchPetDetails = async () => {
       try {
         const response = await axiosInstance.get(`p/pet/${_id}`);
-        console.log('Pet details fetched:', response.data.petData);  // Debugging the response data
-        setPet(response.data.petData);  // Assuming the API returns the pet details
+        setPet(response.data.petData);
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching pet details:', error);
+        setError('Failed to fetch pet details');
+        setLoading(false);
       }
     };
     fetchPetDetails();
-  }, [_id]);  // Fetch pet details when petId changes
+  }, [_id]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
-      {pet ? (
+      {pet && (
         <div>
           <h2>{pet.name}</h2>
-          <img src={pet.media[0]} alt={pet.name} /> {/* Changed images to media */}
-          <p>{pet.description}</p>
+          {pet.media && pet.media.length > 0 ? (
+            pet.media.map((media, index) => (
+              <img
+                key={index}
+                src={`http://localhost:3000/${media}`}
+                alt={`Pet Media ${index + 1}`}
+                style={{ width: "50px", height: "auto" }}
+              />
+            ))
+          ) : (
+            <p>No media available</p>
+          )}
           <p><strong>Age:</strong> {pet.age}</p>
           <p><strong>Breed:</strong> {pet.breed}</p>
           <p><strong>Location:</strong> {pet.location}</p>
           <p><strong>Medical History:</strong> {pet.medical_history}</p>
         </div>
-      ) : (
-        <p>Loading...</p>
       )}
     </div>
   );

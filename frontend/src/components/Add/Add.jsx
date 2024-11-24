@@ -13,7 +13,7 @@ const Add = () => {
         location: '',
         medical_history: '',
         description: '',
-        images: []
+        media: []
     });
     const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ const Add = () => {
         const files = Array.from(event.target.files);
         setPetData((prevData) => ({
             ...prevData,
-            images: files
+            media: files
         }));
     };
 
@@ -34,8 +34,10 @@ const Add = () => {
     
         const formData = new FormData();
         Object.keys(petData).forEach((key) => {
-            if (key === 'images') {
-                petData.images.forEach((file) => formData.append('media', file)); // Appending images
+            if (key === 'media') {
+                petData.media.forEach((file) => {
+                    formData.append('media', file); // Appending each file correctly
+                });
             } else {
                 formData.append(key, petData[key]); // Appending other pet details
             }
@@ -44,26 +46,30 @@ const Add = () => {
         console.log('Form Data:', Array.from(formData.entries())); // Log FormData for debugging
     
         try {
-            const response = await axiosInstance.post('/pet/post', formData); // Post data to the backend
+            const response = await axiosInstance.post('/pet/post', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${localStorage.getItem('token')}` // Add token for authentication
+                },
+            });
             console.log('Response:', response); // Log the response from backend
             alert(response.data.message);
     
-            // Ensure petData is defined and contains valid pet details
+            // Redirect based on category or default
             if (response.data.petData && response.data.petData._id) {
-                // Redirect based on the selected category
                 const category = petData.category;
                 switch (category) {
                     case 'Dog':
-                        navigate('/dog'); // Navigate to the Dog category page
+                        navigate('/dog');
                         break;
                     case 'Cat':
-                        navigate('/cat'); // Navigate to the Cat category page
+                        navigate('/cat');
                         break;
                     case 'Other':
-                        navigate('/others'); // Navigate to the Other category page
+                        navigate('/others');
                         break;
                     default:
-                        navigate(`/p/pet/${response.data.petData._id}`); // Redirect to a default Pet Detail page
+                        navigate(`/p/pet/${response.data.petData._id}`);
                         break;
                 }
             } else {
@@ -74,7 +80,6 @@ const Add = () => {
             alert("Failed to submit form. Please try again.");
         }
     };
-
     return (
         <div className="add-adoption">
             <h3>Add New Adoption</h3>
@@ -114,10 +119,10 @@ const Add = () => {
                 
                 <input 
                     type="file" 
-                    name="images" 
+                    name="media" 
                     accept="image/*" 
                     multiple 
-                    onChange={handleFileChange} 
+                    onChange={handleFileChange}  style={{marginBottom: 12}}
                 />
                 
                  <button type="submit">Post</button>
