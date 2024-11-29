@@ -1,9 +1,6 @@
 import React from 'react'
 import './Footer.css'
 import footer_logo from '../../assets/logo/logo.png'
-import instagram_icon from '../../assets/links/instagram_icon.png'
-import pinterest_icon from '../../assets/links/pinterest_icon.png'
-import whatsapp_icon from '../../assets/links/whatsapp_icon.png'
 
 const Footer = () => {
   return (
@@ -20,13 +17,19 @@ const Footer = () => {
         </ul>
         <div className="footer-social-icon">
             <div className="footer-icons-container">
-                <img src={instagram_icon} alt="" />
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-instagram"></i>
+                </a>
             </div>
             <div className="footer-icons-container">
-                <img src={pinterest_icon} alt="" />
+                <a href="https://www.pinterest.com" target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-pinterest"></i>
+                </a>
             </div>
             <div className="footer-icons-container">
-                <img src={whatsapp_icon} alt="" />
+                <a href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-whatsapp"></i>
+                </a>
             </div>
         </div>
         <div className="footer-copyright">

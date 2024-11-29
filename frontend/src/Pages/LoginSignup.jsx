@@ -78,7 +78,7 @@ function LoginSignup() {
                     <h1>Sign In</h1>
                     <input type="email" name="userEmail" placeholder="Email" value={loginData.userEmail} onChange={handleChange} />
                     <input type="password" name="password" placeholder="Password" value={loginData.password} onChange={handleChange} />
-                    <a href="#">Forget Your Password?</a>
+                    
                     <button type="submit">Sign In</button>
                     {error && <p className="error-message">{error}</p>}
                 </form>

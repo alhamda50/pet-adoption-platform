@@ -74,12 +74,12 @@ const PetDesc = () => {
 
             <div className="pet-details">
                 <h2 className="pet-name">{pet.name}</h2>
-                <p className="pet-age">Age: {pet.age}</p>
-                <p className="pet-breed">Breed: {pet.breed}</p>
-                <p className="pet-gender">Gender: {pet.gender}</p>
-                <p className="pet-location">Location: {pet.location}</p>
-                <p className="pet-category">Category: {pet.category}</p>
-                <p className="pet-medical-history">Medical History: {pet.medical_history}</p>
+                <p className="pet-age"><b>Age:</b> {pet.age}</p>
+                <p className="pet-breed"><b>Breed:</b> {pet.breed}</p>
+                <p className="pet-gender"><b>Gender:</b> {pet.gender}</p>
+                <p className="pet-location"><b>Location:</b> {pet.location}</p>
+                <p className="pet-category"><b>Category:</b> {pet.category}</p>
+                <p className="pet-medical-history"><b>Medical History:</b> {pet.medical_history}</p>
 
                 <div className="pet-description">
                     <h3>Description</h3>

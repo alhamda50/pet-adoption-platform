@@ -68,3 +68,20 @@
     height: 3px;
     background: #c7c7c7;
 }
+
+.footer-social-icon .footer-icons-container i {
+    font-size: 24px; /* Adjust size */
+    margin: 0 10px; /* Space between icons */
+    color: #333; /* Icon color */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .footer-social-icon .footer-icons-container i:hover {
+    color: #0078d4; /* Hover color (blue for example) */
+  }
+
+  .footer-social-icon .footer-icons-container{
+    background-color: #eeeeee00;
+    border: none;
+  }
+  
